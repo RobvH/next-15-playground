@@ -4,17 +4,18 @@ import { Suspense } from 'react'
 import UserList from '@/app/streaming-data/userList'
 
 type PageProps = {
-  searchParams: { [key: string]: string | string[] | undefined }
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
-export default function ServerDataPage({
+export default async function ServerDataPage({
   searchParams,
 }: PageProps) {
-  const ids = Array.isArray(searchParams.id)
-    ? searchParams.id
-    : searchParams.id
-      ? [searchParams.id]
-      : []
+  const { id } = await searchParams
+  const ids = Array.isArray(id)
+    ? id      // If id is an array, use it as is
+    : id      // If it exists,
+      ? [id]  // wrap it in an array
+      : []    // otherwise use an empty array
 
   const users = getUsersByIds(ids)
 
