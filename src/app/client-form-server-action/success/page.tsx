@@ -1,5 +1,5 @@
 // success.tsx
-import { getUser } from '../users'
+import { getUser } from '../services/users'
 import { redirect } from 'next/navigation'
 
 export default async function SuccessPage({
@@ -11,7 +11,7 @@ export default async function SuccessPage({
   const conf = params.conf
 
   if (!conf || typeof conf !== 'string') {
-    redirect('/server-form-status')
+    redirect('/client-form-server-action')
   }
 
   // do not use timestamps for ids, ever, this is just a demo
