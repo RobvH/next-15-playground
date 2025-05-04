@@ -9,8 +9,13 @@ type Errors = {
 }
 
 export type CreateUserActionState = {
-  errors: Errors
-}
+  errors: Errors;
+  values?: {
+    firstName?: string;
+    lastName?: string;
+    shouldFail?: boolean;
+  };
+};
 
 export async function createUser(prevState: CreateUserActionState, formData: FormData) {
 
@@ -21,15 +26,18 @@ export async function createUser(prevState: CreateUserActionState, formData: For
   const errors: Errors = {}
 
   if (!firstName) {
-    errors.firstName = "First Name is required"
+    errors.firstName = 'First name is required.'
   }
 
   if (!lastName) {
-    errors.lastName = "Last Name is required"
+    errors.lastName = 'Last name is required.'
   }
 
   if (Object.keys(errors).length > 0) {
-    return { errors }
+    return {
+      errors,
+      values: { firstName, lastName, shouldFail }, // Preserve entered values
+    }
   }
 
   // will save the user as a json to /data

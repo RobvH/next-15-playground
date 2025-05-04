@@ -23,7 +23,8 @@ export default function CreateUserPage() {
           <input
             type="text"
             name="firstName"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+            defaultValue={state.values?.firstName || ''}
           />
         </label>
         {state.errors.firstName && (
@@ -39,7 +40,8 @@ export default function CreateUserPage() {
           <input
             type="text"
             name="lastName"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+            defaultValue={state.values?.lastName || ''}
           />
         </label>
         {state.errors.lastName && (
@@ -62,5 +64,5 @@ export default function CreateUserPage() {
       
       <SubmitButton isPending={isPending} />
     </form>
-  );
+  )
 }
