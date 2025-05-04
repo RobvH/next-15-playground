@@ -7,15 +7,13 @@ type PageProps = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
-export default async function ServerDataPage({
-  searchParams,
-}: PageProps) {
+export default async function ServerDataPage({ searchParams }: PageProps) {
   const { id } = await searchParams
   const ids = Array.isArray(id)
-    ? id      // If id is an array, use it as is
-    : id      // If it exists,
-      ? [id]  // wrap it in an array
-      : []    // otherwise use an empty array
+    ? id // If id is an array, use it as is
+    : id // If it exists,
+      ? [id] // wrap it in an array
+      : [] // otherwise use an empty array
 
   const users = getUsersByIds(ids)
 
@@ -23,7 +21,7 @@ export default async function ServerDataPage({
     <>
       <h1>Server-Client Streaming Data Page</h1>
       <Suspense fallback={<div>Loading users...</div>}>
-        <UserList users={users}/>
+        <UserList users={users} />
       </Suspense>
     </>
   )

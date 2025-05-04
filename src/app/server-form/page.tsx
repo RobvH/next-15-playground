@@ -3,7 +3,6 @@ import { redirect } from 'next/navigation'
 
 // Server component that uses a server-action
 export default function CreateUserPage() {
-
   async function createUser(formData: FormData) {
     'use server'
 
@@ -15,55 +14,62 @@ export default function CreateUserPage() {
     const confirmationId = await addUser({
       firstName,
       lastName,
-      shouldFail
+      shouldFail,
     })
-    
+
     redirect(`/server-form/success?conf=${confirmationId}`)
   }
 
   return (
-    <form action={createUser} className="max-w-md mx-auto mt-8 p-8 bg-white rounded-lg shadow-md">
+    <form
+      action={createUser}
+      className="mx-auto mt-8 max-w-md rounded-lg bg-white p-8 shadow-md"
+    >
       <div className="mb-6">
         <label className="block">
-          <span className="text-gray-700 font-medium mb-2 block">First Name</span>
+          <span className="mb-2 block font-medium text-gray-700">
+            First Name
+          </span>
           <input
             required
             type="text"
             name="firstName"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
           />
         </label>
       </div>
-      
+
       <div className="mb-6">
         <label className="block">
-          <span className="text-gray-700 font-medium mb-2 block">Last Name</span>
+          <span className="mb-2 block font-medium text-gray-700">
+            Last Name
+          </span>
           <input
             required
             type="text"
             name="lastName"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
           />
         </label>
       </div>
-      
+
       <div className="mb-6">
-        <label className="flex items-center space-x-2 cursor-pointer">
+        <label className="flex cursor-pointer items-center space-x-2">
           <input
             type="checkbox"
             name="shouldFail"
-            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
           />
-          <span className="text-gray-700 font-medium">Should fail?</span>
+          <span className="font-medium text-gray-700">Should fail?</span>
         </label>
       </div>
-      
+
       <button
         type="submit"
-        className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
+        className="w-full rounded-md bg-blue-500 px-4 py-2 text-white transition-colors duration-200 hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
       >
         Continue
       </button>
     </form>
-  );
+  )
 }

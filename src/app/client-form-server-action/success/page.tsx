@@ -20,36 +20,41 @@ export default async function SuccessPage({
   const userInfo = await getUser(userId)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Success!</h1>
-          <div className="h-1 w-16 bg-green-500 mx-auto rounded"></div>
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-xl">
+        <div className="mb-8 text-center">
+          <h1 className="mb-2 text-3xl font-bold text-gray-800">Success!</h1>
+          <div className="mx-auto h-1 w-16 rounded bg-green-500"></div>
         </div>
 
         <div className="space-y-4">
-          <div className="bg-gray-50 p-4 rounded-lg">
+          <div className="rounded-lg bg-gray-50 p-4">
             <p className="text-sm text-gray-600">First Name</p>
-            <p className="text-lg font-semibold text-gray-800">{userInfo.firstName}</p>
+            <p className="text-lg font-semibold text-gray-800">
+              {userInfo.firstName}
+            </p>
           </div>
 
-          <div className="bg-gray-50 p-4 rounded-lg">
+          <div className="rounded-lg bg-gray-50 p-4">
             <p className="text-sm text-gray-600">Last Name</p>
-            <p className="text-lg font-semibold text-gray-800">{userInfo.lastName}</p>
+            <p className="text-lg font-semibold text-gray-800">
+              {userInfo.lastName}
+            </p>
           </div>
 
-          <div className="bg-gray-50 p-4 rounded-lg">
+          <div className="rounded-lg bg-gray-50 p-4">
             <p className="text-sm text-gray-600">Status</p>
-            <div className="flex items-center mt-1">
+            <div className="mt-1 flex items-center">
               <span
-                className={`inline-block w-3 h-3 rounded-full mr-2 ${userInfo.shouldFail ? 'bg-red-500' : 'bg-green-500'}`}></span>
+                className={`mr-2 inline-block h-3 w-3 rounded-full ${userInfo.shouldFail ? 'bg-red-500' : 'bg-green-500'}`}
+              ></span>
               <p className="text-lg font-semibold text-gray-800">
                 {userInfo.shouldFail ? 'Failed' : 'Successful'}
               </p>
             </div>
           </div>
 
-          <div className="bg-gray-50 p-4 rounded-lg">
+          <div className="rounded-lg bg-gray-50 p-4">
             <p className="text-sm text-gray-600">Confirmation ID</p>
             <p className="text-lg font-semibold text-gray-800">{conf}</p>
           </div>

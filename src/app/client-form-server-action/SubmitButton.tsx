@@ -9,12 +9,12 @@ export function SubmitButton({ isPending }: SubmitButtonProps) {
       disabled={isPending}
       className={`w-full ${
         isPending ? 'bg-blue-400' : 'bg-blue-500 hover:bg-blue-600'
-      } text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 flex justify-center items-center`}
+      } flex items-center justify-center rounded-md px-4 py-2 text-white transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none`}
     >
       {isPending ? (
         <>
           <svg
-            className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+            className="mr-3 -ml-1 h-5 w-5 animate-spin text-white"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"

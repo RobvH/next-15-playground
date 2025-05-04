@@ -9,16 +9,18 @@ type Errors = {
 }
 
 export type CreateUserActionState = {
-  errors: Errors;
+  errors: Errors
   values?: {
-    firstName?: string;
-    lastName?: string;
-    shouldFail?: boolean;
-  };
-};
+    firstName?: string
+    lastName?: string
+    shouldFail?: boolean
+  }
+}
 
-export async function createUser(prevState: CreateUserActionState, formData: FormData) {
-
+export async function createUser(
+  prevState: CreateUserActionState,
+  formData: FormData,
+) {
   const firstName = formData.get('firstName') as string
   const lastName = formData.get('lastName') as string
   const shouldFail = formData.get('shouldFail') === 'on'
@@ -44,7 +46,7 @@ export async function createUser(prevState: CreateUserActionState, formData: For
   const confirmationId = await addUser({
     firstName,
     lastName,
-    shouldFail
+    shouldFail,
   })
 
   redirect(`/client-form-server-action/success?conf=${confirmationId}`)

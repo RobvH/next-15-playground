@@ -18,7 +18,7 @@ export async function addUser(userData: UserData): Promise<number> {
 
     // Write the file
     await writeFile(filePath, jsonContent, 'utf-8')
-    
+
     return timestamp
   } catch (error) {
     console.error('Error saving user data:', error)
@@ -33,10 +33,10 @@ export async function getUser(id: number): Promise<UserData> {
 
     // Read the file
     const fileContent = await readFile(filePath, 'utf-8')
-    
+
     // Parse the JSON content
     const userData: UserData = JSON.parse(fileContent)
-    
+
     return userData
   } catch (error) {
     console.error('Error reading user data:', error)
