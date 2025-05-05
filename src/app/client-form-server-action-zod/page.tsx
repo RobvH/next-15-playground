@@ -40,6 +40,8 @@ export default function CreateUserPage() {
             data-name="firstName"
             data-element-type="input"
             data-location="create-user-form"
+            data-event-name="FieldInput"
+            data-sensitive="true"
           />
         </label>
         {state.errors.firstName && (
@@ -61,6 +63,8 @@ export default function CreateUserPage() {
             data-name="lastName"
             data-element-type="input"
             data-location="create-user-form"
+            data-event-name="FieldInput"
+            data-sensitive="true"
           />
         </label>
         {state.errors.lastName && (
@@ -80,6 +84,7 @@ export default function CreateUserPage() {
             data-element-type="checkbox"
             data-location="create-user-form"
             data-text="Should fail?"
+            data-event-name="FieldInput"
           />
           <span className="font-medium text-gray-700">Should fail?</span>
         </label>
