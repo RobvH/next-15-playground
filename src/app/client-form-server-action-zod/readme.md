@@ -12,3 +12,4 @@ Extends the client-form-server-action.
     - uses server side search params access
     - error.tsx support
 - *New* Server action with zod schema validation
+- *New* Includes a SSR-friendly implementation of tracking HOC
