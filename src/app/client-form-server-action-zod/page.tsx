@@ -87,7 +87,16 @@ export default function CreateUserPage() {
         </label>
       </div>
 
-      <SubmitButton isPending={isPending} />
+      <SubmitButton
+        isPending={isPending}
+        clickTracker={{
+          eventName: 'ElementClicked',
+          name: 'signup-submit',
+          text: 'Continue',
+          location: 'signup-form',
+          elementType: 'button',
+        }}
+      />
     </form>
   )
 }

@@ -1,8 +1,28 @@
 type SubmitButtonProps = {
   isPending: boolean
+  /** Click tracking attributes */
+  clickTracker?: {
+    eventName?: string
+    name?: string
+    text?: string
+    location?: string
+    elementType?: string
+    sensitive?: boolean
+  }
 }
 
-export function SubmitButton({ isPending }: SubmitButtonProps) {
+export function SubmitButton({ isPending, clickTracker }: SubmitButtonProps) {
+  const trackingProps = clickTracker
+    ? {
+        'data-click-tracker': true,
+        'data-event-name': clickTracker.eventName || 'ElementClicked',
+        'data-name': clickTracker.name,
+        'data-text': clickTracker.text,
+        'data-location': clickTracker.location,
+        'data-element-type': clickTracker.elementType || 'button',
+      }
+    : {}
+
   return (
     <button
       type="submit"
@@ -10,6 +30,7 @@ export function SubmitButton({ isPending }: SubmitButtonProps) {
       className={`w-full ${
         isPending ? 'bg-blue-400' : 'bg-blue-500 hover:bg-blue-600'
       } flex items-center justify-center rounded-md px-4 py-2 text-white transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none`}
+      {...trackingProps}
     >
       {isPending ? (
         <>
