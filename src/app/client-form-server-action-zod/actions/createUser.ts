@@ -1,6 +1,6 @@
 'use server'
 
-import { addUser } from '@/app/client-form-server-action/services/users'
+import { addUser } from '../services/users'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
 
@@ -11,11 +11,7 @@ type Errors = {
 
 export type CreateUserActionState = {
   errors: Errors
-  values?: {
-    firstName?: string
-    lastName?: string
-    shouldFail?: boolean
-  }
+  values?: Record<string, FormDataEntryValue>
 }
 
 const userSchema = z.object({
@@ -37,11 +33,17 @@ export async function createUser(
 
   if (!parseResult.success) {
     const errors = parseResult.error.flatten().fieldErrors
+    const errorResult: Errors = {}
+
+    if (errors.firstName?.[0]) {
+      errorResult.firstName = errors.firstName[0]
+    }
+    if (errors.lastName?.[0]) {
+      errorResult.lastName = errors.lastName[0]
+    }
+
     return {
-      errors: {
-        firstName: errors.firstName?.[0],
-        lastName: errors.lastName?.[0],
-      },
+      errors: errorResult,
       values: formDataObject,
     }
   }
@@ -55,5 +57,5 @@ export async function createUser(
     shouldFail,
   })
 
-  redirect(`/client-form-server-action/success?conf=${confirmationId}`)
+  redirect(`/client-form-server-action-zod/success?conf=${confirmationId}`)
 }

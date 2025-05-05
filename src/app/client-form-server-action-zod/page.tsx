@@ -1,9 +1,6 @@
 'use client'
 
-import {
-  createUser,
-  CreateUserActionState,
-} from '@/app/client-form-server-action/actions/createUser'
+import { createUser, type CreateUserActionState } from './actions/createUser'
 import { useActionState } from 'react'
 import { SubmitButton } from './SubmitButton'
 
@@ -35,8 +32,8 @@ export default function CreateUserPage() {
             type="text"
             name="firstName"
             className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-            defaultValue={state.values?.firstName || ''}
-            data-click-tracker
+            defaultValue={(state.values?.firstName as string) ?? ''}
+            data-click-tracker=""
             data-name="firstName"
             data-element-type="input"
             data-location="create-user-form"
@@ -58,8 +55,8 @@ export default function CreateUserPage() {
             type="text"
             name="lastName"
             className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-            defaultValue={state.values?.lastName || ''}
-            data-click-tracker
+            defaultValue={(state.values?.lastName as string) ?? ''}
+            data-click-tracker=""
             data-name="lastName"
             data-element-type="input"
             data-location="create-user-form"
@@ -78,8 +75,8 @@ export default function CreateUserPage() {
             type="checkbox"
             name="shouldFail"
             className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-            defaultChecked={state.values?.shouldFail === true}
-            data-click-tracker
+            defaultChecked={state.values?.shouldFail === 'on'}
+            data-click-tracker=""
             data-name="shouldFail"
             data-element-type="checkbox"
             data-location="create-user-form"
