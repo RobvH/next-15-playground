@@ -12,7 +12,6 @@ type Errors = {
 export type CreateUserActionState = {
   errors: Errors
   values?: Record<string, FormDataEntryValue>
-  shouldVerify?: boolean
 }
 
 const userSchema = z.object({
@@ -51,16 +50,6 @@ export async function createUser(
 
   const { firstName, lastName, shouldFail } = parseResult.data
 
-  // For demonstration, let's trigger verification flow for specific conditions
-  // For example, if the first name starts with 'V'
-  if (firstName.toLowerCase().startsWith('v')) {
-    return {
-      errors: {},
-      values: formDataObject,
-      shouldVerify: true,
-    }
-  }
-
   // will save the user as a json to /data
   const confirmationId = await addUser({
     firstName,
@@ -68,5 +57,5 @@ export async function createUser(
     shouldFail,
   })
 
-  redirect(`success?conf=${confirmationId}`)
+  redirect(`/mock-service-layer/success?conf=${confirmationId}`)
 }

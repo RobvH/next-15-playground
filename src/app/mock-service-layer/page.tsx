@@ -1,5 +1,6 @@
 'use client'
 
+import { undefined } from 'zod'
 import { createUser, type CreateUserActionState } from './actions/createUser'
 import { useActionState, useState } from 'react'
 import { SubmitButton } from './components/SubmitButton'
@@ -15,50 +16,57 @@ export default function CreateUserPage() {
 
   const initialState: CreateUserActionState = {
     errors: {},
+    // needsVerification: false,
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [state, createUserAction, isPending] = useActionState(
     createUser,
     initialState,
   )
 
-  const [riskState, checkRiskAction] = useActionState(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [riskState, checkRiskAction, isRiskCheckPending] = useActionState(
+    // @ts-expect-error this is dumb
     async (prevState: CreateUserActionState, formData: FormData) => {
       setFormData(formData) // Store form data for later use
 
-      const riskResult = await checkRisk(formData)
-      if (riskResult.riskStatus === RiskStatus.VERIFY) {
-        setShowMobileForm(true)
-        return { ...prevState, needsVerification: true }
-      } else {
-        // If no verification needed, proceed with user creation
-        return createUserAction(formData)
+      try {
+        const riskResult = await checkRisk(prevState, formData)
+
+        if (riskResult.riskStatus === RiskStatus.VERIFY) {
+          setShowMobileForm(true)
+          return { ...prevState, needsVerification: true }
+        } else {
+          // If no verification needed, proceed with user creation
+          const result = await createUser(prevState, formData)
+          return result
+        }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (e) {
+        return {
+          ...prevState,
+          errors: { submit: 'An error occurred during risk check' },
+        }
       }
     },
     initialState,
   )
 
-  // const handleFormSubmit = async (prevState: CheckRiskActionState, formData: FormData) => {
-  //   setFormData(formData)
-  //
-  //   const riskCheck = await checkRisk(formData)
-  //   if (riskCheck.riskStatus === RiskStatus.VERIFY) {
-  //     setShowMobileForm(true)
-  //   } else {
-  //     // If no verification needed, proceed with user creation
-  //     createUserAction(formData)
-  //   }
-  // }
-
   const handleVerificationRequested = () => {
+    // @todo debug this callback. serialization issue.
     setShowMobileForm(false)
     setShowVerificationForm(true)
   }
 
-  const handleVerificationComplete = () => {
+  const handleVerificationComplete = async () => {
     setShowVerificationForm(false)
+    // @todo debug this gets called
     if (formData) {
-      createUserAction(formData)
+      const result = await createUser(initialState, formData)
+      if (!result.errors || Object.keys(result.errors).length === 0) {
+        setFormData(null) // Clear form data on successful creation
+      }
     }
   }
 
@@ -154,7 +162,7 @@ export default function CreateUserPage() {
       </div>
 
       <SubmitButton
-        isPending={isPending}
+        isPending={isRiskCheckPending || isPending}
         clickTracker={{
           eventName: 'ElementClicked',
           name: 'signup-submit',

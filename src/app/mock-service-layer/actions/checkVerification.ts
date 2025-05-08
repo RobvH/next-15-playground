@@ -16,7 +16,7 @@ export async function checkVerification(
   formData: FormData,
 ): Promise<CheckVerificationState> {
   const code = formData.get('code') as string
-
+  // @todo debug that this gets called
   // Validate verification code
   if (!code || code.trim() === '') {
     return {

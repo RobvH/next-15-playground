@@ -23,6 +23,7 @@ export function MobileNumberForm({ onVerificationRequested }: Props) {
 
   // avoid calling callback directly during the render phase
   useEffect(() => {
+    // @todo debug this gets called
     if (state.success) {
       onVerificationRequested()
     }
