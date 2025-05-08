@@ -1,6 +1,6 @@
 // types/RiskStatus.ts
 export enum RiskStatus {
+  ALLOW = 'allow',
+  FAIL = 'fail',
   VERIFY = 'verify',
-  ALLOW = 'allow'
-  // Future statuses can be added here
 }

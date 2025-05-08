@@ -11,16 +11,27 @@ export type CheckVerificationState = {
   }
 }
 
-export async function checkVerification(prevState: CheckVerificationState, formData: FormData): Promise<CheckVerificationState> {
+export async function checkVerification(
+  prevState: CheckVerificationState,
+  formData: FormData,
+): Promise<CheckVerificationState> {
   const code = formData.get('code') as string
 
   // Validate verification code
   if (!code || code.trim() === '') {
     return {
       errors: {
-        code: 'Verification code is required'
+        code: 'Verification code is required',
       },
-      values: { code }
+      values: { code },
+    }
+  }
+
+  if (code === '999999') {
+    return {
+      success: false,
+      errors: {},
+      values: { code },
     }
   }
 
@@ -28,6 +39,6 @@ export async function checkVerification(prevState: CheckVerificationState, formD
   return {
     success: true,
     errors: {},
-    values: { code }
+    values: { code },
   }
 }

@@ -5,28 +5,50 @@ import { useActionState, useState } from 'react'
 import { SubmitButton } from './components/SubmitButton'
 import { MobileNumberForm } from './components/MobileNumberForm'
 import { VerificationCodeForm } from './components/VerificationCodeForm'
+import { checkRisk } from './actions/checkRisk'
+import { RiskStatus } from './actions/RiskStatusEnum'
 
-// Server component that uses a server-action
 export default function CreateUserPage() {
   const [showMobileForm, setShowMobileForm] = useState(false)
   const [showVerificationForm, setShowVerificationForm] = useState(false)
+  const [formData, setFormData] = useState<FormData | null>(null)
 
   const initialState: CreateUserActionState = {
     errors: {},
   }
 
-  // this bridges the client form to the server action; and gives status
-  // preferable to useFormStatus bc works with any action
-  // also useFormStatus would show pending anytime any form is pending; not this one
   const [state, createUserAction, isPending] = useActionState(
     createUser,
     initialState,
   )
 
-  // Handle the shouldVerify response
-  if (state.shouldVerify && !showMobileForm && !showVerificationForm) {
-    setShowMobileForm(true)
-  }
+  const [riskState, checkRiskAction] = useActionState(
+    async (prevState: CreateUserActionState, formData: FormData) => {
+      setFormData(formData) // Store form data for later use
+
+      const riskResult = await checkRisk(formData)
+      if (riskResult.riskStatus === RiskStatus.VERIFY) {
+        setShowMobileForm(true)
+        return { ...prevState, needsVerification: true }
+      } else {
+        // If no verification needed, proceed with user creation
+        return createUserAction(formData)
+      }
+    },
+    initialState,
+  )
+
+  // const handleFormSubmit = async (prevState: CheckRiskActionState, formData: FormData) => {
+  //   setFormData(formData)
+  //
+  //   const riskCheck = await checkRisk(formData)
+  //   if (riskCheck.riskStatus === RiskStatus.VERIFY) {
+  //     setShowMobileForm(true)
+  //   } else {
+  //     // If no verification needed, proceed with user creation
+  //     createUserAction(formData)
+  //   }
+  // }
 
   const handleVerificationRequested = () => {
     setShowMobileForm(false)
@@ -35,7 +57,16 @@ export default function CreateUserPage() {
 
   const handleVerificationComplete = () => {
     setShowVerificationForm(false)
-    // create user
+    if (formData) {
+      createUserAction(formData)
+    }
+  }
+
+  const handleVerificationFailure = () => {
+    setShowVerificationForm(false)
+    setShowMobileForm(false)
+    // Reset the stored form data
+    setFormData(null)
   }
 
   if (showMobileForm) {
@@ -48,13 +79,14 @@ export default function CreateUserPage() {
     return (
       <VerificationCodeForm
         onVerificationComplete={handleVerificationComplete}
+        onVerificationFailure={handleVerificationFailure}
       />
     )
   }
 
   return (
     <form
-      action={createUserAction}
+      action={checkRiskAction}
       className="mx-auto mt-8 max-w-md rounded-lg bg-white p-8 shadow-md"
     >
       <div className="mb-6">

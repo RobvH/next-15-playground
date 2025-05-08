@@ -10,9 +10,13 @@ import { SubmitButton } from './SubmitButton'
 
 type Props = {
   onVerificationComplete: () => void
+  onVerificationFailure: () => void
 }
 
-export function VerificationCodeForm({ onVerificationComplete }: Props) {
+export function VerificationCodeForm({
+  onVerificationComplete,
+  onVerificationFailure,
+}: Props) {
   const initialState: CheckVerificationState = {
     errors: {},
   }
@@ -25,8 +29,10 @@ export function VerificationCodeForm({ onVerificationComplete }: Props) {
   useEffect(() => {
     if (state.success) {
       onVerificationComplete()
+    } else {
+      onVerificationFailure()
     }
-  }, [state.success, onVerificationComplete])
+  }, [state.success, onVerificationComplete, onVerificationFailure])
 
   return (
     <form
